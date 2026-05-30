@@ -809,7 +809,7 @@ class StrackerAdmin(StrackerPublic):
                 try:
                     data = read_ui_data.read_ui_file(m.filename, r.open(m, "r"), data)
                 except read_ui_data.JSONDecodeError:
-                    acinfo("Problem with parsing %s (probably broken mod, ignored)", fn)
+                    acinfo("Problem with parsing file (probably broken mod, ignored)")
                 except:
                     acwarning("Unexpected error while parsing json info:")
                     acerror(traceback.format_exc())
