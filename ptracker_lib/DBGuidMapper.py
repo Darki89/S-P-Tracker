@@ -15,7 +15,7 @@ class DBGuidMapper:
     def register_guid_mapping(self, guid_orig, guid_new):
         self.map_orig_to_new[guid_orig] = guid_new
         self.map_new_to_orig[guid_new] = guid_orig
-        self.new_access_timestamps[guid_new] = time.clock()
+        self.new_access_timestamps[guid_new] = time.perf_counter()
         d = hashlib.md5(guid_new.encode('utf8')).digest() # 16 bytes
         d = struct.unpack('qq', d)
         d = abs(d[0] ^ d[1])
@@ -26,12 +26,12 @@ class DBGuidMapper:
         if guid_new in self.map_orig_to_new:
             acdebug("GUIDMapper: guid %s seems to be orig already.", guid_new)
             return guid_new
-        self.new_access_timestamps[guid_new] = time.clock()
+        self.new_access_timestamps[guid_new] = time.perf_counter()
         return self.map_new_to_orig.get(guid_new, guid_new)
 
     def guid_new(self, guid_orig):
         res = self.map_orig_to_new.get(guid_orig, guid_orig)
-        self.new_access_timestamps[res] = time.clock()
+        self.new_access_timestamps[res] = time.perf_counter()
         return res
 
     def guid_numeric(self, guid_new):
