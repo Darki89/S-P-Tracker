@@ -1577,9 +1577,27 @@ class DbSchemata:
 
     def migrate_23_24(self):
         cur = self.db.cursor()
-        cur.execute("SELECT PlayerId, SteamGuid FROM Players")
-        for pid, guid in cur.fetchall():
-            guid = guidhasher(guid)
-            cur.execute("UPDATE Players SET SteamGuid = :guid WHERE PlayerId = :pid", locals())
+        # Get the configuration to check if guids_based_on_driver_names is enabled
+        try:
+            from ptracker_lib.config import config
+            guids_based_on_driver_names = getattr(config.GLOBAL, 'guids_based_on_driver_names', False)
+        except:
+            guids_based_on_driver_names = False
+            acwarning("Could not load guids_based_on_driver_names config, assuming False")
+    
+        # Only hash GUIDs if guids_based_on_driver_names is False or not found in config
+        # This preserves the driver name-based identification for servers using that feature
+        if not guids_based_on_driver_names:
+            acinfo("Converting SteamGuids to SHA256 hashes (guids_based_on_driver_names is disabled)")
+            cur.execute("SELECT PlayerId, SteamGuid FROM Players")
+            for pid, guid in cur.fetchall():
+                if guid and not guid.startswith("sha256#"):
+                    guid_hashed = guidhasher(guid)
+                    cur.execute("UPDATE Players SET SteamGuid = :guid_hashed WHERE PlayerId = :pid", locals())
+        else:
+            acwarning("Skipping GUID hashing - guids_based_on_driver_names is enabled. Player identification will use driver names instead of SteamGuids.")
+    
         cur.execute("ALTER TABLE Players ADD COLUMN Anonymized INTEGER")
+        self.setVersion(cur, 24)
+        acinfo("Migrated from db version 23 to 24.")
         self.setVersion(cur, 24)
