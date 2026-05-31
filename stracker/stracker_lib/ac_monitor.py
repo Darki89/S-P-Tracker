@@ -1200,7 +1200,9 @@ class ACMonitor:
     @acquire_lock
     def newConnection(self, event):
         if config.config.STRACKER_CONFIG.guids_based_on_driver_names:
-            dbGuidMapper.register_guid_mapping(event.driverGuid, event.driverName)
+            # Create a hashed GUID based on driver name instead of Steam ID
+            driver_name_guid = guidhasher("drivername_" + event.driverName)
+            dbGuidMapper.register_guid_mapping(event.driverGuid, driver_name_guid)
         else:
             dbGuidMapper.register_guid_mapping(event.driverGuid, guidhasher(event.driverGuid))
         # check if a rejoin occured
