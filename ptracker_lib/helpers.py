@@ -498,7 +498,7 @@ def simulate_crappy_connection():
             return getattr(self.socket, a)
 
     socket.socket = SocketWrapper
-
+           
 dbGuidMapper = None
 def guidhasher(guid, respect_driver_names=True):
     global dbGuidMapper
@@ -512,10 +512,13 @@ def guidhasher(guid, respect_driver_names=True):
     # Wenn guids_based_on_driver_names aktiviert ist, gib den Original-GUID zurück
     if respect_driver_names:
         try:
-            from ptracker_lib.config import config
-            if config.GLOBAL.guids_based_on_driver_names:
-                return guid
-        except:
+            from stracker_lib.config import config  # WICHTIG: stracker_lib, nicht ptracker_lib!
+            if hasattr(config, 'STRACKER_CONFIG') and hasattr(config.STRACKER_CONFIG, 'guids_based_on_driver_names'):
+                if config.STRACKER_CONFIG.guids_based_on_driver_names:
+                    acdebug("guidhasher: respecting driver names for guid %s", guid)
+                    return guid
+        except Exception as e:
+            acdebug("guidhasher: could not check config, error: %s", str(e))
             pass
     
     # Ansonsten: Standard-Hashing
