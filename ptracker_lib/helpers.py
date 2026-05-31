@@ -500,13 +500,25 @@ def simulate_crappy_connection():
     socket.socket = SocketWrapper
 
 dbGuidMapper = None
-def guidhasher(guid):
+def guidhasher(guid, respect_driver_names=True):
     global dbGuidMapper
     if dbGuidMapper is None:
         import ptracker_lib.DBGuidMapper
-        dbGuidMapper =  ptracker_lib.DBGuidMapper.dbGuidMapper
+        dbGuidMapper = ptracker_lib.DBGuidMapper.dbGuidMapper
+    
     if guid is None:
         return None
+    
+    # Wenn guids_based_on_driver_names aktiviert ist, gib den Original-GUID zurück
+    if respect_driver_names:
+        try:
+            from ptracker_lib.config import config
+            if config.GLOBAL.guids_based_on_driver_names:
+                return guid
+        except:
+            pass
+    
+    # Ansonsten: Standard-Hashing
     if not guid.startswith("sha256#") and guid != "":
         guid_new = dbGuidMapper.raw_hash(guid)
         dbGuidMapper.register_guid_mapping(guid, guid_new)
