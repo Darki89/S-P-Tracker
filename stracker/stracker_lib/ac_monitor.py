@@ -394,8 +394,8 @@ class ACDriver:
         self.carId = carState.carId
 
     def reconnectDriver(self, carState):
+        self.newConnectionEvent(carState)
         self.ptracker_conn = None
-        self.carId = carState.carId
 
     def updatePtrackerConn(self, connection, ac_version, pt_version, track_checksum, car_checksum):
         self.ptracker_conn = connection
