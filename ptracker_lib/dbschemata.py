@@ -1600,4 +1600,3 @@ class DbSchemata:
         cur.execute("ALTER TABLE Players ADD COLUMN Anonymized INTEGER")
         self.setVersion(cur, 24)
         acinfo("Migrated from db version 23 to 24.")
-        self.setVersion(cur, 24)
