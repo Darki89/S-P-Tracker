@@ -394,8 +394,8 @@ class ACDriver:
         self.carId = carState.carId
 
     def reconnectDriver(self, carState):
+        self.newConnectionEvent(carState)
         self.ptracker_conn = None
-        self.carId = carState.carId
 
     def updatePtrackerConn(self, connection, ac_version, pt_version, track_checksum, car_checksum):
         self.ptracker_conn = connection
@@ -1200,32 +1200,38 @@ class ACMonitor:
     @acquire_lock
     def newConnection(self, event):
         if config.config.STRACKER_CONFIG.guids_based_on_driver_names:
+            mapped_guid = event.driverName
             dbGuidMapper.register_guid_mapping(event.driverGuid, event.driverName)
         else:
+            mapped_guid = event.driverGuid
             dbGuidMapper.register_guid_mapping(event.driverGuid, guidhasher(event.driverGuid))
-        # check if a rejoin occured
+        
+        # check if a rejoin occured using the MAPPED guid
         d = None
-        for td in self.allDrivers.byGuidAll(event.driverGuid):
+        for td in self.allDrivers.byGuidAll(mapped_guid):
             if event.carModel == td.car:
                 d = td
+        
         if d is None:
-            d = ACDriver(event.driverGuid, self.saveLap)
+            # New driver
+            d = ACDriver(mapped_guid, self.saveLap)  # Use mapped_guid here!
             d.newConnectionEvent(event)
             d = self.allDrivers.addDriver(d)
         else:
+            # Reconnection with same name/car
             d.reconnectDriver(event)
-        car_display = ""
-        if len(self.currentSession.cars) > 1:
-            uiname = self.currentSession.carsUi.get(d.car, d.car)
-            car_display = "(" + uiname + ")"
-        self.sendBroadcastMessage(text='Player %s entered the server %s.' % (d.name, car_display),
-                                  color=(1.0,1.0,1.0,1.0),
-                                  mtype=MTYPE_ENTER_LEAVE)
-        self.check_for_ptracker_connection(d)
-        self.updateOnline()
-        if config.minorating_enabled():
-            if not config.config.STRACKER_CONFIG.guids_based_on_driver_names:
-                self.mr_query.query(guid=event.driverGuid)
+            car_display = ""
+            if len(self.currentSession.cars) > 1:
+                uiname = self.currentSession.carsUi.get(d.car, d.car)
+                car_display = "(" + uiname + ")"
+            self.sendBroadcastMessage(text='Player %s entered the server %s.' % (d.name, car_display),
+                                      color=(1.0,1.0,1.0,1.0),
+                                      mtype=MTYPE_ENTER_LEAVE)
+            self.check_for_ptracker_connection(d)
+            self.updateOnline()
+            if config.minorating_enabled():
+                if not config.config.STRACKER_CONFIG.guids_based_on_driver_names:
+                    self.mr_query.query(guid=event.driverGuid)
 
     @acquire_lock
     def connectionLost(self, event):
