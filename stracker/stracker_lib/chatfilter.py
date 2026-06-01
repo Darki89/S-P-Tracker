@@ -31,7 +31,8 @@ def init():
     sfile = config.SWEAR_FILTER.swear_file
     try:
         c = 0
-        for l in open(sfile).readlines():
+        with open(sfile) as f:
+            for l in f.readlines():
             w = l.strip().lower()
             if w != "":
                 bad_words.append(w)
