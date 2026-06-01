@@ -66,7 +66,7 @@ class ControlsIniFile(BaseACIniFile):
 
     def controls_used(self):
         input_method = self._parser.get('HEADER', 'INPUT_METHOD', fallback=None)
-        if type(input_method) == type(""): input_method = input_method.lower()
+        if isinstance(input_method, str): input_method = input_method.lower()
         shifter = self._parser.getint('SHIFTER', 'ACTIVE', fallback=None)
         shifter_joy = self._parser.getint('SHIFTER', 'JOY', fallback=None)
         if shifter and shifter_joy: shifter = 2
