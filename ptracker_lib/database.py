@@ -91,7 +91,7 @@ class CallWrapper:
                     del self.results[i]
             if len(self.tracebacks) > CallWrapper.MAX_PENDING_RESULTS:
                 ids = sorted(self.tracebacks.keys())
-                ids = ids[:(len(self.results)-CallWrapper.MAX_PENDING_RESULTS)]
+                ids = ids[:(len(self.tracebacks)-CallWrapper.MAX_PENDING_RESULTS)]
                 for i in ids:
                     del self.tracebacks[i]
 
