@@ -91,7 +91,7 @@ class ACLogParser:
             try:
                 self._log_f = open(self._log_path, 'r', encoding='utf-8', errors='replace')
                 break
-            except:
+            except (OSError, IOError, FileNotFoundError):
                 self._log_f = None
                 time.sleep(1)
         if self._log_f is None:

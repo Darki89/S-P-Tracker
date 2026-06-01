@@ -111,7 +111,7 @@ def read_ui_file(filename, file_ptr, odata):
                     l = None
             if l < 20:
                 l = l*1000. # probably a bug in a mod
-        except:
+        except (KeyError, ValueError, TypeError, AttributeError):
             l = None
         return _rec_update(odata, {'tracks': {acname : {'uiname' : tj["name"], 'length' : l, 'tags' : tj["tags"]}}})
     if parts[-1].lower() == "map.png":
