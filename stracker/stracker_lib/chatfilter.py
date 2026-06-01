@@ -33,11 +33,11 @@ def init():
         c = 0
         with open(sfile) as f:
             for l in f.readlines():
-            w = l.strip().lower()
-            if w != "":
-                bad_words.append(w)
-                bad_words.append(extend_spaces(w))
-            c += 1
+                w = l.strip().lower()
+                if w != "":
+                    bad_words.append(w)
+                    bad_words.append(extend_spaces(w))
+                c += 1
         acinfo("Added %d words to swear filter.", c)
     except OSError as e:
         acerror("Cannot read file with bad words (%s): %s", sfile, str(e))
