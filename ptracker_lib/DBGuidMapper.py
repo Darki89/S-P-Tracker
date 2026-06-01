@@ -35,11 +35,11 @@ class DBGuidMapper:
         return res
 
     def guid_numeric(self, guid_new):
-        self.new_access_timestamps[guid_new] = time.clock()
+        self.new_access_timestamps[guid_new] = time.perf_counter()
         return self.map_new_to_numeric(guid_new)
 
     def cleanup(self):
-        tcurr = time.clock()
+        tcurr = time.perf_counter()
         threshold = 24*3600
         todel = []
         for guid,acct in self.new_access_timestamps.items():
