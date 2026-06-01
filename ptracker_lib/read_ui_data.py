@@ -65,7 +65,7 @@ def _interpret_json(cont):
         except (UnicodeDecodeError, ValueError, TypeError, AttributeError):
             scont = str(cont, encoding="windows-1252", errors='ignore')
     try:
-        return json.loads(scont, strict=False)
+        return json.loads(scont)
     except (json.JSONDecodeError, ValueError):
         raise JSONDecodeError()
 
