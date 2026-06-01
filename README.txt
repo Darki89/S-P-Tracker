@@ -34,3 +34,25 @@ CONTACTING THE AUTHOR
 The original author Neys is contactable as user never_eat_yellow_snow1 at the Assetto Corsa forums 
 (http://www.assettocorsa.net/forum/index.php) or as user Neys at the RaceDepartment forums
 (http://www.racedepartment.com/forums/).
+
+
+INSTALLATION DEPENDENCIES
+
+pip3 install simplejson
+pip3 install pygal
+pip3 install cherrypy
+pip3 install acplugins4python
+pip3 install bottle
+pip3 install apsw
+pip3 install psycopg2-binary
+
+OR
+
+apt install python3-pip
+apt install python3-bottle
+apt install python3-psycopg2
+apt install python3-dateutil
+apt install python3-simplejso
+apt install python3-pygal
+apt install python3-cherrypy3
+apt install python3-apsw
