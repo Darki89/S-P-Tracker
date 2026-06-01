@@ -52,9 +52,10 @@ mainPageTemplate = SimpleTemplate("""
                 </ul>
             </p>
             <h2>Project homepages</h2>
-            <p><a href="http://n-e-y-s.de">ptracker and stracker homepage</a><br>
-               <a href="http://n-e-y-s.de/ptracker_doc">ptracker documentation and FAQ</a><br>
-               <a href="http://n-e-y-s.de/stracker_doc">stracker documentation and FAQ</a></p>
+            <p><a href="https://github.com/gregsqueeb/S-P-Tracker">original ptracker and stracker sourcecode</a><br>
+               <a href="https://github.com/Darki89/S-P-Tracke">updated ptracker and stracker sourcecode</a><br>
+               <a href="https://github.com/Darki89/S-P-Tracker/wiki/ptracker-Documentation">ptracker documentation and FAQ</a></p>
+               <a href="https://github.com/Darki89/S-P-Tracker/wiki/stracker-Documentation">stracker documentation and FAQ</a></p>
         </div>
     </div>
 </div>
