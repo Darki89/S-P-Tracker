@@ -6,7 +6,8 @@ class JsonResults:
 
     def __init__(self,filename):
         acdebug("opening result json file %s", filename)
-        self._R = json.load(open(filename), strict=False)
+        with open(filename) as f:
+            self._R = json.load(f)
 
     def isRace(self):
         return self._R["Type"] == "RACE"
