@@ -54,7 +54,7 @@ class JSONDecodeError(RuntimeError):
     pass
 
 def _interpret_json(cont):
-    if type(cont) == str:
+    if isinstance(cont, str):
         scont = cont
     else:
         try:
