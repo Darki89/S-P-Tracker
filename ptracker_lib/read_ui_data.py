@@ -62,19 +62,21 @@ def _interpret_json(cont):
         except (UnicodeDecodeError, ValueError, TypeError):
             try:
                 scont = str(cont, encoding="windows-1252")
-            except:
-                scont = str(cont, encoding="windows-1252", errors='ignore')
+        except (UnicodeDecodeError, ValueError, TypeError, AttributeError):
+            scont = str(cont, encoding="windows-1252", errors='ignore')
     try:
-        return json.loads(scont, strict=False)
-    except:
+        return json.loads(scont)
+    except (json.JSONDecodeError, ValueError):
         raise JSONDecodeError()
 
 def _rec_update(tod, fromd):
     for k in fromd.keys():
-        if not k in tod:
+        if k not in tod:
             tod[k] = fromd[k]
-        else:
+        elif isinstance(tod[k], dict) and isinstance(fromd[k], dict):
             _rec_update(tod[k], fromd[k])
+        else:
+            tod[k] = fromd[k]
     return tod
 
 def read_ui_file(filename, file_ptr, odata):
@@ -105,7 +107,7 @@ def read_ui_file(filename, file_ptr, odata):
             else:
                 try:
                     l = float(l)
-                except:
+                except (ValueError, TypeError):
                     l = None
             if l < 20:
                 l = l*1000. # probably a bug in a mod
