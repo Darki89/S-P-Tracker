@@ -54,12 +54,12 @@ class JSONDecodeError(RuntimeError):
     pass
 
 def _interpret_json(cont):
-    if type(cont) == str:
+    if isinstance(cont, str):
         scont = cont
     else:
         try:
             scont = str(cont, encoding="utf-8")
-        except UnicodeDecodeError:
+        except (UnicodeDecodeError, ValueError, TypeError):
             try:
                 scont = str(cont, encoding="windows-1252")
             except:
