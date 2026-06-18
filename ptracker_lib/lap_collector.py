@@ -29,6 +29,7 @@ import time
 from ptracker_lib import helithreading
 from ptracker_lib import acsim
 from ptracker_lib.helpers import *
+from collections.abc import Iterable
 try:
     import acsys
     from ptracker_lib.config import config
@@ -41,7 +42,7 @@ jump_delta = 20. # 20m city block distance threshold for checking for plausible 
 
 def interpolate(x, x0, x1, y0, y1):
     f = (x-x0)/(x1-x0)
-    if isinstance(y0, collections.Iterable):
+    if isinstance(y0, Iterable):
         return [(1-f)*v0 + f*v1 for (v0,v1) in zip(y0, y1)]
     else:
         return (1-f)*y0 + f*y1
