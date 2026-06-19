@@ -219,7 +219,7 @@ def localtime2utc(dt):
     return dt.replace(tzinfo=gettz()).astimezone(datetime.timezone.utc).replace(tzinfo=None)
 
 def unixtime_now():
-    return datetime2unixtime(datetime.datetime.utcnow())
+    return datetime2unixtime(datetime.datetime.now(timezone.utc))
 
 def format_datetime(dt, onlyDate=False):
     dt = utc2localtime(dt)
