@@ -22,6 +22,7 @@
 # This file is part of the ptracker project. See ptracker.py for details.
 ################################################################################
 from ptracker_lib import acsim
+from datetime import datetime, timezone
 import datetime
 import calendar
 import time
@@ -201,7 +202,7 @@ def datetime2unixtime(dt):
     return int(calendar.timegm(dt.timetuple()))
 
 def unixtime2datetime(t):
-    return datetime.datetime.utcfromtimestamp(t)
+    return datetime.fromtimestamp(t, tz=timezone.utc)
 
 def utc2localtime(dt):
     global gettzav
