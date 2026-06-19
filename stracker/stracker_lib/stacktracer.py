@@ -69,7 +69,7 @@ class TraceDumper(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        while not self.stop_requested.isSet():
+        while not self.stop_requested.is_set():
             time.sleep(self.interval)
             stacktraces()
 
@@ -82,7 +82,7 @@ def trace_start(interval=60*60): # each hour
     """Start tracing into the given file."""
     global _tracer
     _tracer = TraceDumper(interval)
-    _tracer.setDaemon(True)
+    _tracer.daemon = True
     _tracer.start()
 
 def trace_stop():
