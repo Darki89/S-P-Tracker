@@ -140,12 +140,18 @@ if __name__ == "__main__":
     logger.acinfo("%s loglevel=%d", logger.logger_obj, logger.logger_obj.log_level)
     logger.acinfo("Stracker version %s", stracker_lib.version)
     try:
-        stracker_ini_contents = open(args.stracker_ini, "r", encoding='ascii', errors='replace').read()
-    except:
+        with open(args.stracker_ini, "r",
+                  encoding="ascii",
+                  errors="replace") as f:
+            stracker_ini_contents = f.read()
+    except Exception:
         stracker_ini_contents = "<unable to read stracker_ini>"
     try:
-        server_cfg_contents = open(config.config.STRACKER_CONFIG.ac_server_cfg_ini, "r", encoding='ascii', errors='replace').read()
-    except:
+        with open(config.config.STRACKER_CONFIG.ac_server_cfg_ini, "r",
+                  encoding="ascii",
+                  errors="replace") as f:
+            server_cfg_contents = f.read()
+    except Exception:
         server_cfg_contents = "<unable to read server_cfg>"
     logger.acinfo(("Dump of stracker configuration (%s):\n" % args.stracker_ini) + replace_passwords(stracker_ini_contents) + "\n")
     logger.acinfo(("Dump of ac server configuration (%s):\n" % config.config.STRACKER_CONFIG.ac_server_cfg_ini) + replace_passwords(server_cfg_contents) + "\n")
