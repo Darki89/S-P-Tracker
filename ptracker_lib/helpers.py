@@ -200,8 +200,10 @@ def format_time_s(t):
 def datetime2unixtime(dt):
     return int(calendar.timegm(dt.timetuple()))
 
+#def unixtime2datetime(t):
+#    return datetime.datetime.utcfromtimestamp(t)
 def unixtime2datetime(t):
-    return datetime.datetime.utcfromtimestamp(t)
+    return datetime.datetime.fromtimestamp(t, datetime.timezone.utc)
 
 def utc2localtime(dt):
     global gettzav
@@ -217,8 +219,10 @@ def localtime2utc(dt):
         acerror("cannot import dateutil.tz. timezones will be inaccurate.")
     return dt.replace(tzinfo=gettz()).astimezone(datetime.timezone.utc).replace(tzinfo=None)
 
+#def unixtime_now():
+#    return datetime2unixtime(datetime.datetime.utcnow())
 def unixtime_now():
-    return datetime2unixtime(datetime.datetime.utcnow())
+    return datetime2unixtime(datetime.datetime.now(datetime.timezone.utc))
 
 def format_datetime(dt, onlyDate=False):
     dt = utc2localtime(dt)
