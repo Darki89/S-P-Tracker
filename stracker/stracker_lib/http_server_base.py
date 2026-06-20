@@ -569,7 +569,10 @@ class StrackerPublicBase:
             else:
                 cb = ", %s" % ci[lapid]['uicar']
             legend = "%s%s by %s%s" % (lb, format_time(ci[lapid]['laptime'], False), ci[lapid]['player'], cb)
-            line_chart.add(legend, zip(nsp, v))
+            xy = [(a, b) for a, b in zip(nsp, v) if a is not None and b is not None]
+            xy = sorted(xy, key=lambda p: p[0])
+            line_chart.add(legend, xy)
+            #line_chart.add(legend, zip(nsp, v))
             maxN = max(len(nsp), maxN)
         precision = max(1, min(10, int(1600/maxN)))
         line_chart.interpolation_precision = precision
