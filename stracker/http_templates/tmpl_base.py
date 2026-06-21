@@ -257,7 +257,7 @@ baseTemplate = SimpleTemplate("""
 %    totalPages = pagination[1]
 % import re
 % def link_to_page(p):
-%    nopage_url = re.sub(r"([?&])page=[^?&]*([?&])?", r"\g<1>", curr_url)
+%    nopage_url = re.sub(r"([?&])page=[^?&]*(&?)", r"\1\2", curr_url)
 %    if not '?' in nopage_url:
 %        nopage_url += "?"
 %    elif not nopage_url[-1] in ['?', '&']:
