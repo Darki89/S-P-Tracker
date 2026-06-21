@@ -294,7 +294,7 @@ baseTemplate = SimpleTemplate("""
         </div>
         <div class="col-sm-3">
                 <p class="navbar-text navbar-right">
-                   {{"v"+features['version']}} provided by <b>Neys & Darki89</b>
+                   stracker {{"v"+features['version']}}</b>
                 </p>
         </ul>
     </div>
