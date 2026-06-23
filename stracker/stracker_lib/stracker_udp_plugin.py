@@ -482,7 +482,7 @@ class StrackerUDPPlugin:
                 if dSqr < 1.**2:
                     # min resolution is 1 meter
                     itemToBeIgnored = True
-                if entry.rcvTime - lastItem.rcvTime < 0.2:
+                if entry.rcvTime - lastItem.rcvTime < 0.5:
                     # min resolution is 1 second
                     itemToBeIgnored = True
                 if entry.normalizedSplinePos < lastItem.normalizedSplinePos:
